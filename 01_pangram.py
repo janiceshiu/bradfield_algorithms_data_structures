@@ -8,7 +8,60 @@ class Pangram:
   """
 
   def is_pangram_1(self, phrase):
-    pass
+    """
+    Determines whether a given string is a pangram
+    Time analysis references https://wiki.python.org/moin/TimeComplexity
+    where possible
+
+    Overall
+    * time - o(n^2)? Due to the possible nested o(n) calculations in the for loop?
+    * space - o(1) cos everything in the function requires constant space
+    * although if we take storage of the phrase into account then o(n) where n
+    * is length of the phrase
+
+    Function may terminate early if `phrase` is a pangram and all alphabets are
+     reached before the phrase ends
+    """
+    # time - o(1)
+    # space - o(1)
+    # o(26) constant space and time, since the number of ascii lowercase
+    # characters is constant - 26. so o(1) * 26 = o(26)
+    # which simplifies back to o(1)
+    alpha = set('abcdefghijklmnopqrstuvwxyz')
+
+    # overall loop
+    # time - o(n^2)?
+    # * o(n) `for c in phrase`
+    # * within that, another o(n) for `len(alpha)`?
+    # space - o(1)?
+    # * just a fixed number of temporary variables that are ints or chars?
+    # * alpha doesn't get any bigger, always smaller or the same size
+
+    # `c in phrase`
+    # time - o(n).
+    # * is o(1) done max n times, so o(n) where n is the number of characters
+    # in `phrase`
+    # space - o(1)? constant?
+    # * since c is a temporary variable
+    for c in phrase:
+      # o(1) constant time and space?
+      # does set.discard take constant time and space?
+      alpha.discard(c.lower())
+
+      # not sure about time and space.
+      # time - o(n)?
+      # * is length of the set calculated everytime or is it stored in a
+      # variable somewhere?
+      # * if calculated every time, then o(n) linear time to calculate the l
+      # length of the set.
+      # space - o(1)?
+      # * probably constant, just a single comparison?
+      # * may not need to go through the whole phrase if the phrase is a
+      # pangram and all alphabets are reached before the phrase ends
+      if len(alpha) == 0:
+        return True
+
+    return False
 
   def is_pangram_2(self, phrase):
     pass
