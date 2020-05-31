@@ -116,7 +116,44 @@ class Pangram:
     return False
 
   def is_pangram_3(self, phrase):
-    pass
+    """
+    Determines whether a given string is a pangram
+    Time analysis references https://wiki.python.org/moin/TimeComplexity
+    where possible
+
+    Overall
+    * time - o(n) where n is `phrase`'s length
+    * space - o(n) where n is `phrase`'s length
+    * both due to the time and space to convert `phrase` into a set in
+    * `set(phrase.lower)`
+    """
+    # time - o(1)
+    # space - o(1)
+    # since the number of ascii lowercase characters is constant - 26
+    # so o(1) * 26 which simplifies back to constant o(1)
+    alpha = set('abcdefghijklmnopqrstuvwxyz')
+
+    # overall
+    # time - o(n)
+    # space - o(n)
+    # where n is the length of `phrase`
+
+    # `character.lower` - o(1) constant space and time to lower each character
+    # time - o(n)
+    # * to insert each lowered character into the set since set.insert()
+    # is o(1). so o(1)*n
+    # space - o(n)
+    # * to store each lowered character in the set.
+    # * worst case every char in `phrase` is unique even after lowering
+    phrase = set(phrase.lower())
+
+    # time - o(1)
+    # from documentation, average time for intersection of both sets is
+    # O(min(len(x), len(y)). lowest possible length is 26, length of the
+    # lowercase set
+    # so I guess this is... o(26) constant time? which simplifies back to o(1)
+    # space - o(1)? or o(n)? not sure how much space set intersection requires
+    return alpha.intersection(phrase) == alpha
 
 class TestPangram:
   """
