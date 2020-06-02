@@ -72,6 +72,30 @@ class RomanNumerals:
 
     return acc
 
+  def shorten(self, string):
+    """
+    challenge problem - take a roman numeral and convert it into the shortest
+    possible version
+    eg: IIIII returns V
+    """
+
+    number = self.roman_to_number_3(string)
+    return self.number_to_roman(number)
+
+  def number_to_roman(self, number):
+    acc = []
+    lookup = [
+      ("M", 1000), ("CM", 900), ("D", 500), ("CD", 400), ("C", 100), ("XC", 90),
+      ("L", 50), ("XL", 40), ("X", 10), ("IX", 9), ("V", 5), ("IV", 4), ("I", 1)
+    ]
+
+    for elem in lookup:
+      multiplier = number // elem[1]
+      acc.append(multiplier * elem[0])
+      number = number % elem[1]
+
+    return ''.join(acc)
+
 class TestRomanNumerals:
   """
   Tests the Roman Numerals class
@@ -80,6 +104,7 @@ class TestRomanNumerals:
   def test(self, roman_numerals_class):
     self.test_roman_to_number(roman_numerals_class)
     self.test_roman_to_number_3(roman_numerals_class)
+    self.test_shorten(roman_numerals_class)
 
   def test_roman_to_number(self, r):
     strings = ["I", "V", "X", "XIIII", "L", "C", "D", "M", "MMXVI"]
@@ -103,6 +128,14 @@ class TestRomanNumerals:
     expected_result = [1, 4, 5, 9, 10, 14, 50, 100, 500, 1000, 1914, 2016]
 
     result = map(r.roman_to_number_3, strings)
+    assert(list(result) == expected_result)
+
+  def test_shorten(self, r):
+    strings = ["III", "IIII", "IIIII", "XXXXXIV", "CCCCCCCCC", "MCMVVIIII"]
+
+    expected_result = ["III", "IV", "V", "LIV", "CM", "MCMXIV"]
+
+    result = map(r.shorten, strings)
     assert(list(result) == expected_result)
 
 test = TestRomanNumerals()
