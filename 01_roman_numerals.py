@@ -31,6 +31,19 @@ class RomanNumerals:
 
     return acc
 
+  def roman_to_number_2(self, string):
+    """
+    Converts a string to roman numerals.
+    Assumes that everything in the string is a valid roman numeral that follows the rules below.
+    Subtraction is present. ie: IX = -1+10 = 9
+    Numbers go bigger to smaller unless subtraction is present.
+    Not all pairs are allowed.
+    * I can precede V or X
+    * X can precede L or C
+    * C can precede D or M
+    """
+    pass
+
 class TestRomanNumerals:
   """
   Tests the Roman Numerals class
@@ -45,6 +58,14 @@ class TestRomanNumerals:
     expected_result = [1, 5, 10, 14, 50, 100, 500, 1000, 2016]
 
     result = map(r.roman_to_number, strings)
+    assert(list(result) == expected_result)
+
+  def test_roman_to_number_2(self, r):
+    strings = ["I", "IV", "V", "IX", "X", "XIIII", "L", "C", "D", "M", "MCMXIV", "MMXVI"]
+
+    expected_result = [1, 4, 5, 9, 10, 14, 50, 100, 500, 1000, 1914, 2016]
+
+    result = map(r.roman_to_number_2, strings)
     assert(list(result) == expected_result)
 
 test = TestRomanNumerals()
