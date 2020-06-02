@@ -31,22 +31,21 @@ class RomanNumerals:
 
     return acc
 
-
-
 class TestRomanNumerals:
   """
   Tests the Roman Numerals class
   """
 
-  @staticmethod
-  def test():
+  def test(self, roman_numerals_class):
+    self.test_roman_to_number(roman_numerals_class)
+
+  def test_roman_to_number(self, r):
     strings = ["I", "V", "X", "XIIII", "L", "C", "D", "M", "MMXVI"]
 
     expected_result = [1, 5, 10, 14, 50, 100, 500, 1000, 2016]
 
-    r = RomanNumerals()
-
     result = map(r.roman_to_number, strings)
     assert(list(result) == expected_result)
 
-TestRomanNumerals.test()
+test = TestRomanNumerals()
+test.test(RomanNumerals())
