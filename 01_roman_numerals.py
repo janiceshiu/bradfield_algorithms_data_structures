@@ -33,16 +33,36 @@ class RomanNumerals:
 
   def roman_to_number_2(self, string):
     """
-    Converts a string to roman numerals.
-    Assumes that everything in the string is a valid roman numeral that follows the rules below.
-    Subtraction is present. ie: IX = -1+10 = 9
-    Numbers go bigger to smaller unless subtraction is present.
-    Not all pairs are allowed.
-    * I can precede V or X
-    * X can precede L or C
-    * C can precede D or M
+      Converts a string to roman numerals.
+      Assumes that everything in the string is a valid roman numeral that follows the rules below.
+      Subtraction is present. ie: IX = -1+10 = 9
+      Numbers go bigger to smaller unless subtraction is present.
+      Not all pairs are allowed.
+      * I can precede V or X
+      * X can precede L or C
+      * C can precede D or M
     """
-    pass
+    lookup = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+
+    acc = 0
+    idx = 0
+    str_length = len(string)
+
+    while idx < str_length:
+      curr_num_in_integer = lookup[string[idx]]
+      if ((idx + 1) < str_length):
+        next_num_in_integer = lookup[string[idx+1]]
+        if next_num_in_integer > curr_num_in_integer:
+          acc += (next_num_in_integer - curr_num_in_integer)
+          idx += 2
+        else:
+          acc += curr_num_in_integer
+          idx += 1
+      else:
+        acc += curr_num_in_integer
+        idx += 1
+
+    return acc
 
   def roman_to_number_3(self, string):
     """
@@ -103,6 +123,7 @@ class TestRomanNumerals:
 
   def test(self, roman_numerals_class):
     self.test_roman_to_number(roman_numerals_class)
+    self.test_roman_to_number_2(roman_numerals_class)
     self.test_roman_to_number_3(roman_numerals_class)
     self.test_shorten(roman_numerals_class)
 
