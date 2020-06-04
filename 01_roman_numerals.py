@@ -41,6 +41,14 @@ class RomanNumerals:
       * I can precede V or X
       * X can precede L or C
       * C can precede D or M
+
+      Analysis
+      Time - o(n) where n is the length of the string
+      * no matter what, we have to iterate through each character in the
+      entire string once
+      Space - o(1)
+      * lookup table is a constant
+      * temporary variables store either fixed sized strings or integers
     """
     lookup = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
 
@@ -78,6 +86,15 @@ class RomanNumerals:
 
     Inspired by Elliott Jin's suggestion to use the lookup table from the
     original solution for roman_to_number/2
+
+    Analysis
+    time - o(nk)?
+    * not very sure. lookup length is constant but we have to go through the whole string as well
+    * so maybe o(n) where n is length of the string?
+    * each iteration uses o(k) time to slice the string in `string[len(elem[0]):]`
+    * also not sure how long `string.startswith` takes
+    space - not sure - is it constant because there is max two copies of a string
+    - the original and the current copy?
     """
     acc = 0
     lookup = [
@@ -97,12 +114,23 @@ class RomanNumerals:
     challenge problem - take a roman numeral and convert it into the shortest
     possible version
     eg: IIIII returns V
+
+    Analysis
+    time & space - combination of roman_to_number_3 and number_to_roman
     """
 
     number = self.roman_to_number_3(string)
     return self.number_to_roman(number)
 
   def number_to_roman(self, number):
+    """
+      Converts an integer to a roman numeral
+
+      Analysis
+      time - o(n) where n is length of acc?
+      * time to iterate through lookup is constant
+      * however, `''.join(acc)`... does this take o(n) time to iterate through the length of acc?
+    """
     acc = []
     lookup = [
       ("M", 1000), ("CM", 900), ("D", 500), ("CD", 400), ("C", 100), ("XC", 90),
