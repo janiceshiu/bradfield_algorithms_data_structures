@@ -1,5 +1,5 @@
 class Solution:
-  def spiral_order(self, matrix):
+  def spiral_order_recursive(self, matrix):
     """
       Given a matrix of m x n elements (m rows, n columns),
       return all elements of the matrix in spiral order
@@ -85,7 +85,7 @@ class Test:
 
     for idx, m in enumerate(matrices):
       try:
-        result = s.spiral_order(m)
+        result = s.spiral_order_recursive(m)
         assert result == expected_results[idx]
       except AssertionError:
         print(m)
