@@ -63,6 +63,22 @@ class Solution:
 
     return do_spiral(matrix, [])
 
+  def spiral_order_iterative(self):
+    """
+    solve this the iterative way
+
+    plan:
+    - keep track of where you're moving
+    - if you're moving to the right, i, j i = row, j = column
+    - changes by (0,1) (row stays same, column increases by 1) velocity is (0,1)
+    - figure out velocity for all directions (0,1), (1,0), (0,-1), (-1,0)
+    - keep moving. see whether it's a valid move. if it is, you move, if it's not, you turn
+    - for loop that moves (n*m)-1 times cos you don't move on first step.
+    - eg: matrix is 3 rows and 4 columns, 3x4 = 12. you move 11 times
+    - keep track of coordinates you've already processed. eg: change item to nil. so if nil, turn
+    """
+    pass
+
 class Test:
   def test(self):
     s = Solution()
