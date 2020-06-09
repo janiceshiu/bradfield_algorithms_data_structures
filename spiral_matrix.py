@@ -45,6 +45,14 @@ class Solution:
       # let's make the matrix smaller for recursion
       # get rid of the first and last rows
       # they've already been used
+      # note: slicing is expensive.
+      # cos we are copying everything except for the outer ring.
+      # optimization:
+      # instead of slicing the matrix, keep track of indexes for
+      # what regions of the matrix you're working with
+      # keep track of top left (1,1) and bottom right (4,4)
+      # top left increases by (1,1) bottom right decreases by (1,1)
+
       mtrx = matrix[1:-1]
       # get rid of the first and last items in the remaining lists
       # they've already been used
