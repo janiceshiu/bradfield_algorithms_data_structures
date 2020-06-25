@@ -53,6 +53,47 @@ class GraphSearch:
 
     return info
 
+  def minimum_depth_of_binary_tree(self, root):
+    """
+    https://leetcode.com/problems/minimum-depth-of-binary-tree/
+    Definition for a binary tree node.
+    class TreeNode:
+      def __init__(self, val=0, left=None, right=None):
+      self.val = val
+      self.left = left
+      self.right = right
+
+    The minimum depth is the number of nodes along the shortest path from
+    the root node down to the nearest leaf node.
+
+    Use breadth first search since you're finding the shortest path
+    No need to take into account what has been visited since there is no
+    cycle in a tree
+    Take current level into account
+
+    Solution
+    Runtime: 44 ms, faster than 71.04% of Python3 online submissions.
+    """
+
+    if not root: return 0
+
+    from collections import deque
+    queue = deque()
+
+    # root is at depth 1
+    queue.append((root, 1))
+
+    while queue:
+      (node, depth) = queue.popleft()
+
+      # found a leaf. return the current level
+      if not node.left and not node.right:
+        return depth
+
+      # add the children. current level goes up by 1
+      if node.left: queue.append((node.left, depth + 1))
+      if node.right: queue.append((node.right, depth + 1))
+
 simple_graph = {
     'A': ['B', 'D'],
     'B': ['C', 'D'],
