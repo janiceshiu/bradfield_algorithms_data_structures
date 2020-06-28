@@ -111,8 +111,8 @@ class WeightedGraphs():
       Memory Usage: 15.8 MB, less than 19.89% of Python3 online submissions
       for Network Delay Time.
     """
-    # if impossible, return -1
-    # bfs. if not all are connected, impossible. return -1
+    # if cannnot reach all the nodes, it is impossible, return -1
+    # breadth first search. if not all are connected, impossible. return -1
 
     from collections import defaultdict, deque
     # defaultdict so we don't have to handle keyerror
@@ -123,7 +123,7 @@ class WeightedGraphs():
     for source, target, time in times:
       graph[source].append((target, time))
 
-    # check whether possible
+    # check whether it is possible to reach all nodes with breadth first search
     visited_nodes = set()
 
     queue = deque()
