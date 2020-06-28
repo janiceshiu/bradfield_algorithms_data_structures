@@ -87,6 +87,92 @@ class WeightedGraphs():
     print(f"original graph: {graph}")
     return costs_to_start_vert
 
+  def network_delay_time(self, times, N, K):
+    """
+      from https://leetcode.com/problems/network-delay-time/
+      There are N network nodes, labelled 1 to N.
+
+      Given times, a list of travel times as directed edges
+      times[i] = (u, v, w), where u is the source node, v is the target node,
+      and w is the time it takes for a signal to travel from source to target.
+
+      Now, we send a signal from a certain node K.
+
+      How long will it take for all nodes to receive the signal?
+      If it is impossible, return -1.
+
+      times: List[List[int]], N: int, K: int) -> int:
+
+      Example
+      Input: times = [[2,1,1],[2,3,1],[3,4,1]], N = 4, K = 2
+      Output: 2
+
+      Runtime: 496 ms, faster than 73.14% of Python3 online submissions
+      for Network Delay Time.
+      Memory Usage: 15.8 MB, less than 19.89% of Python3 online submissions
+      for Network Delay Time.
+    """
+    # if impossible, return -1
+    # bfs. if not all are connected, impossible. return -1
+
+    from collections import defaultdict, deque
+    # defaultdict so we don't have to handle keyerror
+    # dequeue so queueing and dequeueing is o(1) time
+    graph = defaultdict(list)
+
+    # build graph
+    for source, target, time in times:
+      graph[source].append((target, time))
+
+    # check whether possible
+    visited_nodes = set()
+
+    queue = deque()
+    queue.append(K)
+
+    while queue:
+      node = queue.popleft()
+      if node not in visited_nodes:
+        visited_nodes.add(node)
+        for target_node, _time in graph[node]:
+          queue.append(target_node)
+
+    if len(visited_nodes) != N: return -1
+
+    # ok visiting all is possible now to see how long all nodes take to receive the signal
+    # dijikstra probably. and then just take... the node with the largest time from node K
+    # that should be the max length for that node to receive the signal
+
+    # dijkstra time
+    # for vertex in graph, set the distance from the starting vertex to infinit
+    travel_time_from_start_vert = {vertex: float('infinity') for vertex in graph}
+
+    # K is the starting node
+    travel_time_from_start_vert[K] = 0
+
+    # priority queue time
+    import heapq
+
+    priority_queue = [(0, K)]
+
+    while priority_queue:
+      curr_time_to_start_vert, curr_vert = heapq.heappop(priority_queue)
+
+
+      if curr_time_to_start_vert > travel_time_from_start_vert[curr_vert]:
+        continue
+
+      for neighbour_vertex, time in graph[curr_vert]:
+        proposed_time = curr_time_to_start_vert + time
+        if proposed_time < travel_time_from_start_vert[neighbour_vertex]:
+          travel_time_from_start_vert[neighbour_vertex] = proposed_time
+
+          heapq.heappush(priority_queue, (proposed_time, neighbour_vertex))
+
+    # get the keys of the final dict from dijkstra's.
+    # the node with the largest time from node K
+    # should be the max length for that node to receive the signal
+    return max(travel_time_from_start_vert.values())
 
 example_graph = {
   'U': {'V': 2, 'W': 5, 'X': 1},
@@ -99,3 +185,8 @@ example_graph = {
 
 w = WeightedGraphs()
 w.dijkstras_algorithm(example_graph, 'U')
+
+# test cases from leetcode. i modified one to test for -1
+assert w.network_delay_time([[1,2,1],[2,1,3]], 2, 2) == 3
+assert w.network_delay_time([[2,1,1],[2,3,1],[3,4,1]], 4, 2) == 2
+assert w.network_delay_time([[2,1,1],[3,4,1]], 4, 2) == -1
