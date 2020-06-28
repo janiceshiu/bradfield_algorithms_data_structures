@@ -110,6 +110,16 @@ class WeightedGraphs():
       for Network Delay Time.
       Memory Usage: 15.8 MB, less than 19.89% of Python3 online submissions
       for Network Delay Time.
+
+      Overall time complexity...
+      O(E+N+E+N^2) = O(N^2+N+2E)
+      O(E) to build the graph, where E is the number of items in `times`
+      O(N+E) to do breadth first search on the graph to check whether everything
+      is connected
+      O(N^2) to do Dijkstra's algorithm to find the network delay time
+
+      if it is impossible to reach all nodes,
+      running time is O(E+N+E) = O(2E+N)
     """
     # if cannnot reach all the nodes, it is impossible, return -1
     # breadth first search. if not all are connected, impossible. return -1
@@ -120,6 +130,8 @@ class WeightedGraphs():
     graph = defaultdict(list)
 
     # build graph
+    # time complexity, O(E) where E is the number of items in `times`
+    # each item in `times` is actually an edge, right?
     for source, target, time in times:
       graph[source].append((target, time))
 
@@ -129,6 +141,9 @@ class WeightedGraphs():
     queue = deque()
     queue.append(K)
 
+    # time complexity, O(N+E) where
+    # E is the number of items in `times`
+    # N is the number of network nodes
     while queue:
       node = queue.popleft()
       if node not in visited_nodes:
@@ -145,6 +160,13 @@ class WeightedGraphs():
     # signal
 
     # dijkstra time
+    # time complexity, max O(N^2) where N is the number of network nodes
+    # worst case, every node is connected to every other node in so you have to
+    # inspect every other node whenever you process a node
+    # wiki says there might be additional upper bounds that reduce time complexity
+    # depending on how things are implemented
+    # https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Running_time
+    # looked through it but still not sure.
     # for vertex in graph, set the distance from the starting vertex to infinity
     travel_time_from_start_vert = {vertex: float('infinity') for vertex in graph}
 
