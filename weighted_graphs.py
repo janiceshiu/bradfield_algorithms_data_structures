@@ -1,18 +1,18 @@
 class WeightedGraphs():
   def dijkstras_algorithm(self, graph, starting_vertex):
     """
-    my implementation and understanding is heavily taken from bradfield's article
-    https://bradfieldcs.com/algos/graphs/dijkstras-algorithm/ and Bari's video
-    https://www.youtube.com/watch?v=XB4MIexjvY0
+      my implementation and understanding is heavily taken from bradfield's
+      article https://bradfieldcs.com/algos/graphs/dijkstras-algorithm/ and
+      Bari's video https://www.youtube.com/watch?v=XB4MIexjvY0
 
-    I've commented almost every line of the function and printed a whole bunch
-    of info so that it is much more obvious to me how the algorithm runs,
-    especially the part about updating the dict of costs
+      I've commented almost every line of the function and printed a whole
+      bunch of info so that it is much more obvious to me how the algorithm
+      runs, especially the part about updating the dict of costs
 
-    Note that I put 'cost' rather than 'distance' to make this more generic
-    because at the end of the day, a weighted graph just says that oh, it takes
-    X to go from Y to Z. and that X can be distance, time, etc. at the end of
-    the day, X is just a cost.
+      Note that I put 'cost' rather than 'distance' to make this more generic
+      because at the end of the day, a weighted graph just says that oh, it
+      takes X to go from Y to Z. and that X can be distance, time, etc.
+      at the end of the day, X is just a cost.
     """
 
     import pprint
