@@ -16,7 +16,6 @@ class WeightedGraphs():
     """
 
     import pprint
-    # pp = pprint.PrettyPrinter(indent=2)
     pprint.pprint(graph)
     # let's say (source_vertex, target_vertex, distance) and we have
     # [(a, b, 5), (a, c, 7), (c, d, 3)]
@@ -139,12 +138,14 @@ class WeightedGraphs():
 
     if len(visited_nodes) != N: return -1
 
-    # ok visiting all is possible now to see how long all nodes take to receive the signal
-    # dijikstra probably. and then just take... the node with the largest time from node K
-    # that should be the max length for that node to receive the signal
+    # ok visiting all is possible now to see how long all nodes take to
+    # receive the signal
+    # dijikstra probably. and then just take... the node with the largest time
+    # from node K.  that should be the max length for that node to receive the
+    # signal
 
     # dijkstra time
-    # for vertex in graph, set the distance from the starting vertex to infinit
+    # for vertex in graph, set the distance from the starting vertex to infinity
     travel_time_from_start_vert = {vertex: float('infinity') for vertex in graph}
 
     # K is the starting node
@@ -157,7 +158,6 @@ class WeightedGraphs():
 
     while priority_queue:
       curr_time_to_start_vert, curr_vert = heapq.heappop(priority_queue)
-
 
       if curr_time_to_start_vert > travel_time_from_start_vert[curr_vert]:
         continue
