@@ -89,6 +89,42 @@ class DynamicProgrammingAdv():
 
     return curr_max_profit
 
+  def isSubsequence(self, s, t):
+    """
+    Is Subsequence
+    https://leetcode.com/problems/is-subsequence/
+    Given a string s and a string t, check if s is subsequence of t.
+
+    A subsequence of a string is a new string which is formed from the
+    original string by deleting some (can be none) of the characters without
+    disturbing the relative positions of the remaining characters. (ie, "ace"
+    is a subsequence of "abcde" while "aec" is not).
+
+    O(1) space - two additional variables used
+    O(n) time - where n is the length of string t or string s,
+    whichever is longer
+    Worst case, have to traverse the entire string t to see whether s is a
+    subsequence of t
+    Worst case, s is longer than t. calculating len(s) is O(n) time where
+    n is length of s
+    """
+
+    if not s: return True
+    s_idx = 0
+    s_len = len(s)
+
+    # traverse both strings
+    # if the t char matches what we're looking for in the s char
+    # increment s_idx
+    # either way, increment t_idx so we can continue searching
+    for t_idx in range(len(t)):
+      if t[t_idx] == s[s_idx]:
+        s_idx += 1
+      if s_idx == s_len:
+        return True
+
+    return s_idx == s_len
+
 d = DynamicProgrammingAdv()
 assert d.rob([1,2,3,1]) == 4
 assert d.rob([2,7,9,3,1]) == 12
@@ -101,6 +137,13 @@ assert d.maxProfit([7,1,5,3,6,4]) == 5
 assert d.maxProfit([7,6,4]) == 0
 assert d.maxProfit([]) == 0
 assert d.maxProfit([4]) == 0
+
+assert d.isSubsequence("abc", "ahbgdc") == True
+assert d.isSubsequence("axc", "xahbgdc") == False
+assert d.isSubsequence("abc", "a") == False
+assert d.isSubsequence("a", "c") == False
+assert d.isSubsequence("abc", "abc") == True
+assert d.isSubsequence("", "a") == True
 
 class NumArray:
     def __init__(self, nums):
