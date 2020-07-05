@@ -52,3 +52,44 @@ assert d.rob([3,5]) == 5
 assert d.rob([5,3]) == 5
 assert d.rob([3]) == 3
 
+class NumArray:
+    def __init__(self, nums):
+      """
+      range sum query - immutable
+      https://leetcode.com/problems/range-sum-query-immutable/
+      Given an integer array nums, find the sum of the elements between
+      indices i and j (i ≤ j), inclusive.
+
+      dummy value 0 at the start. doesn't affect sum
+      but means that sum from i to j inclusive is
+      sum at j+1 - sum at i
+      nums = [-2, 0, 3, -5, 2, -1]
+      self.cache = [0, -2, -2, 1, -4, -2, -3]
+
+      sumRange(i=0,j=2) == sum of [-2, 0, 3] == 1
+      that is self.cache[j+1] - self.cache[i] aka self.cache[2+1] - self.cache[0]
+
+      sumRange(i=2,j=5) == sum of [3, -5, 2, -1] == -1
+      that is self.cache[5+1] - self.cache[2] = -3 -(-2) = -1
+
+      init is o(n) space to store the cache. o(n) time to create the cache
+
+      but calls to sumRange are o(1) time cos it's just accessing the array
+      twice and doing subtraction
+      """
+      self.cache = [0]
+
+      for idx in range(0, len(nums)):
+        self.cache.append(nums[idx] + self.cache[idx])
+
+    def sumRange(self, i, j):
+        return self.cache[j+1] - self.cache[i]
+
+obj = NumArray([-2, 0, 3, -5, 2, -1])
+assert obj.sumRange(0, 2) == 1
+assert obj.sumRange(2,5) == -1
+assert obj.sumRange(0, 5) == -3
+
+obj = NumArray([])
+obj = NumArray([1])
+assert obj.sumRange(0,0) == 1
