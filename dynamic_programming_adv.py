@@ -44,6 +44,51 @@ class DynamicProgrammingAdv():
 
     return rob_at_idx[-1]
 
+  def maxProfit(self, prices):
+    """
+      Best time to buy and sell stock
+      https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+
+      Say you have an array for which the ith element is the price of a
+      given stock on day i.
+
+      If you were only permitted to complete at most one transaction (i.e., buy
+      one and sell one share of the stock), design an algorithm to find the
+      maximum profit.
+
+      Note that you cannot sell a stock before you buy one.
+
+      Space - O(1) - constant number of variables
+      Time - O(n) - where n is the number of items in prices.
+      have to iterate over the entire prices array once
+    """
+    if prices == []: return 0
+    # lowest possible profit. don't buy and sell anything
+    curr_max_profit = 0
+
+    # we checked for empty arr so there's there's at least 1 price
+    curr_min_price = prices[0]
+
+    # lowest possible profit. don't buy and sell anything
+    curr_profit = 0
+
+    for p in prices:
+      # if current price is less than the current min
+      # profit is going to be negative
+      # eg: prices = [7,1],
+      # when p == 1 curr_min = 7.
+      # p < curr_min. profit will be 1-7 = -6 which is less than 0,
+      # which is "don't buy or sell any stock"
+      # so update min element. max_profit still stays the same
+      curr_min_price = min(p, curr_min_price)
+
+      # curr_profit = p - curr_min_price
+      # if curr_profit > curr_max_profit we found a new profit
+      # update curr_max_profit
+      curr_max_profit = max(p - curr_min_price, curr_max_profit)
+
+    return curr_max_profit
+
 d = DynamicProgrammingAdv()
 assert d.rob([1,2,3,1]) == 4
 assert d.rob([2,7,9,3,1]) == 12
@@ -51,6 +96,11 @@ assert d.rob([]) == 0
 assert d.rob([3,5]) == 5
 assert d.rob([5,3]) == 5
 assert d.rob([3]) == 3
+
+assert d.maxProfit([7,1,5,3,6,4]) == 5
+assert d.maxProfit([7,6,4]) == 0
+assert d.maxProfit([]) == 0
+assert d.maxProfit([4]) == 0
 
 class NumArray:
     def __init__(self, nums):
