@@ -68,6 +68,44 @@ class Frog():
     print(f"min cost to jump from stone[0] to stone[i]: {cost}")
     return cost[-1]
 
+  def back_to_front_iterative(self, n, h):
+    """
+      `cost` is the minimum cost to jump from a stone at index `i` to the last
+      stone, which is at index `n-1`
+
+      `cost[n-1]` is 0 because there is no cost to jump from the last stone at
+      index n-1 to the exact same last stone.
+      `cost[0]` is what we want - the minimum cost to jump from the first stone
+      at index 0 to the last stone at index n-1
+    """
+    if n == 0 or n == 1:
+      return 0
+
+    # earlier check means by this point, there are at least 2 items in the array
+    # set the LAST 2 items in the cost array so that in the for loop, we know
+    # that when we 'look FORWARD' at the values, they are already calculated.
+    # eg: to calculate `cost[i]``, we look at `cost[i+1]` and `cost[i+2]`
+    # to see whether jumping from stone `i` to stone `n` is cheaper VIA
+    # stone `i+1` or VIA stone `i+2`
+    cost = [0] * n
+    cost[-2] = abs(h[-1] - h[-2])
+
+    for i in range(n-3, -1, -1):
+      # small jump means the total cost to jump from
+      # stone i to the last stone - stone `n-1`,
+      # where the FIRST JUMP is from stone `i` to stone `i+1`
+      small_jump = cost[i+1] + abs(h[i+1] - h[i])
+
+      # big jump means the total cost to jump from
+      # stone i to the last stone - stone `n-1`,
+      # where the FIRST JUMP is from stone `i` to stone `i+2`
+      big_jump = cost[i+2] + abs(h[i+2] - h[i])
+
+      cost[i] = min(small_jump, big_jump)
+
+    print(f"min cost to jump from stone[i] to stone[n-1]: {cost}")
+    return cost[0]
+
 f = Frog()
 
 # Both front_to_back_iterative and front_to_back_recursive should calculate
@@ -82,5 +120,19 @@ assert f.front_to_back_iterative(2, [3,2]) == 1
 assert f.front_to_back_iterative(2, [10, 10]) == 0
 assert f.front_to_back_iterative(4, [10, 30, 40, 20]) == 30
 assert f.front_to_back_iterative(6, [30, 10, 60, 10, 60, 50]) == 40
+print("\n")
+
+# Both back_to_front_iterative and frog_back_to_front_recursive should calculate
+# the same cost array - the min cost to jump from stone[i] to stone[n-1].
+# They are operating on the same principle.
+# The only difference is one is iterative and one is recursive
+print("back to front iterative")
+assert f.back_to_front_iterative(0, []) == 0
+assert f.back_to_front_iterative(1, [2]) == 0
+assert f.back_to_front_iterative(2, [2,3]) == 1
+assert f.back_to_front_iterative(2, [3,2]) == 1
+assert f.back_to_front_iterative(2, [10, 10]) == 0
+assert f.back_to_front_iterative(4, [10, 30, 40, 20]) == 30
+assert f.back_to_front_iterative(6, [30, 10, 60, 10, 60, 50]) == 40
 print("\n")
 
