@@ -136,6 +136,38 @@ class Frog():
     print(f"min cost to jump from stone[i] to stone[n-1]: {cost}")
     return min_cost
 
+  def frog_back_to_front_recursive(self, n, h):
+    if n == 0 or n == 1: return 0
+
+    # set up the memo.
+    # `None` means we haven't populated the memo at that index
+    cost = [None] * n
+    cost[-1] = 0
+    cost[-2] = abs(h[-1] - h[-2])
+
+    def min_cost_from_stone_i_to_end(i):
+      if i == n-1:
+        return 0
+      if i == n-2:
+        return cost[-2]
+
+      # check whether the memo contains a previously calculated result
+      if cost[i] != None: return cost[i]
+      small_jump = min_cost_from_stone_i_to_end(i+1) + abs(h[i+1] - h[i])
+
+      big_jump = min_cost_from_stone_i_to_end(i+2) + abs(h[i+2] - h[i])
+
+      # since we had to do calculations to reach this point, save the result
+      # to memo so that it is not recalculated the next time
+      # min_cost_from_stone_i_to_end(i) is called
+      cost[i] = min(big_jump, small_jump)
+
+      return cost[i]
+
+    min_cost = min_cost_from_stone_i_to_end(0)
+    print(f"min cost to jump from stone[i] to stone[n-1]: {cost}")
+    return min_cost
+
 f = Frog()
 
 # Both front_to_back_iterative and front_to_back_recursive should calculate
@@ -176,3 +208,11 @@ assert f.back_to_front_iterative(4, [10, 30, 40, 20]) == 30
 assert f.back_to_front_iterative(6, [30, 10, 60, 10, 60, 50]) == 40
 print("\n")
 
+print("back to front recursive")
+assert f.frog_back_to_front_recursive(0, []) == 0
+assert f.frog_back_to_front_recursive(1, [2]) == 0
+assert f.frog_back_to_front_recursive(2, [2,3]) == 1
+assert f.frog_back_to_front_recursive(2, [3,2]) == 1
+assert f.frog_back_to_front_recursive(2, [10, 10]) == 0
+assert f.frog_back_to_front_recursive(4, [10, 30, 40, 20]) == 30
+assert f.frog_back_to_front_recursive(6, [30, 10, 60, 10, 60, 50]) == 40
