@@ -106,6 +106,36 @@ class Frog():
     print(f"min cost to jump from stone[i] to stone[n-1]: {cost}")
     return cost[0]
 
+  def frog_front_to_back_recursive(self, n, h):
+    if n == 0 or n == 1: return 0
+
+    # set up the memo
+    # `None` means we haven't populated the memo at that index
+    cost = [None] * n
+    cost[0] = 0
+    cost[1] = abs(h[1] - h[0])
+
+    def min_cost_from_start_to_stone_i(i):
+      # base cases
+      if i == 0: return cost[0]
+      if i == 1: return cost[1]
+
+      # check whether the memo contains a previously calculated result
+      if cost[i] != None: return cost[i]
+      small_jump = min_cost_from_start_to_stone_i(i-1) + abs(h[i] - h[i-1])
+
+      big_jump = min_cost_from_start_to_stone_i(i-2) + abs(h[i] - h[i-2])
+
+      # since we had to do calculations to reach this point, save the result
+      # to memo so that it is not recalculated the next time
+      # min_cost_from_start_to_stone_i(i) is called
+      cost[i] = min(small_jump, big_jump)
+      return cost[i]
+
+    min_cost = min_cost_from_start_to_stone_i(n-1)
+    print(f"min cost to jump from stone[i] to stone[n-1]: {cost}")
+    return min_cost
+
 f = Frog()
 
 # Both front_to_back_iterative and front_to_back_recursive should calculate
@@ -120,6 +150,16 @@ assert f.front_to_back_iterative(2, [3,2]) == 1
 assert f.front_to_back_iterative(2, [10, 10]) == 0
 assert f.front_to_back_iterative(4, [10, 30, 40, 20]) == 30
 assert f.front_to_back_iterative(6, [30, 10, 60, 10, 60, 50]) == 40
+print("\n")
+
+print("front to back recursive")
+assert f.frog_front_to_back_recursive(0, []) == 0
+assert f.frog_front_to_back_recursive(1, [2]) == 0
+assert f.frog_front_to_back_recursive(2, [2,3]) == 1
+assert f.frog_front_to_back_recursive(2, [3,2]) == 1
+assert f.frog_front_to_back_recursive(2, [10, 10]) == 0
+assert f.frog_front_to_back_recursive(4, [10, 30, 40, 20]) == 30
+assert f.frog_front_to_back_recursive(6, [30, 10, 60, 10, 60, 50]) == 40
 print("\n")
 
 # Both back_to_front_iterative and frog_back_to_front_recursive should calculate
